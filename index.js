@@ -14,8 +14,8 @@ YouTube : https://www.youtube.com/@GlaceYT
                                                                        
 ☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
 
-
 */
+
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
@@ -37,9 +37,7 @@ app.listen(port, () => {
   console.log('\x1b[36m[ SERVER ]\x1b[0m', '\x1b[32m SH : http://localhost:' + port + ' ✅\x1b[0m');
 });
 
-const statusMessages = ["🎧 Listening to Spotify", "🎮 Playing VALORANT"];
 const statusTypes = [ 'dnd', 'idle'];
-let currentStatusIndex = 0;
 let currentTypeIndex = 0;
 
 async function login() {
@@ -55,14 +53,22 @@ async function login() {
 }
 
 function updateStatus() {
-  const currentStatus = statusMessages[currentStatusIndex];
+  const guild = client.guilds.cache.get('YOUR_GUILD_ID'); // Wpisz ID swojego serwera
+  if (!guild) {
+    console.error('\x1b[31m[ ERROR ]\x1b[0m', 'Guild not found!');
+    return;
+  }
+
+  const memberCount = guild.memberCount;
+  const currentStatus = `Słucha: ${memberCount} osób`;
   const currentType = statusTypes[currentTypeIndex];
+
   client.user.setPresence({
-    activities: [{ name: currentStatus, type: ActivityType.Custom }],
+    activities: [{ name: currentStatus, type: ActivityType.Listening }],
     status: currentType,
   });
   console.log('\x1b[33m[ STATUS ]\x1b[0m', `Updated status to: ${currentStatus} (${currentType})`);
-  currentStatusIndex = (currentStatusIndex + 1) % statusMessages.length;
+
   currentTypeIndex = (currentTypeIndex + 1) % statusTypes.length;
 }
 
@@ -81,7 +87,6 @@ client.once('ready', () => {
 
 login();
 
-  
 /*
 
 ☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
@@ -97,6 +102,5 @@ DISCORD :  https://discord.com/invite/xQF9f9yUEM
 YouTube : https://www.youtube.com/@GlaceYT                         
                                                                        
 ☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
-
 
 */
